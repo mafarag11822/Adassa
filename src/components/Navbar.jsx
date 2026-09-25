@@ -1,6 +1,10 @@
+import { useState } from "react";
 import logo from "../assets/logo-GdqARQRt.png";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
+
 export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 bg-[#0a0a0a]/95 backdrop-blur-xl border-b border-transparent">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -92,51 +96,78 @@ export default function Navbar() {
               ابدأ القراءة
             </Link>
           </div>
-          <button className="md:hidden p-3 text-neutral-400 hover:text-white hover:bg-[#161616] rounded-xl transition-all duration-300 border border-transparent hover:border-[#262626]">
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden p-3 text-neutral-400 hover:text-white hover:bg-[#161616] rounded-xl transition-all duration-300 border border-transparent hover:border-[#262626]"
+          >
             <svg
               className="w-6 h-6"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
+              {isOpen ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              ) : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M4 6h16M4 12h16M4 18h16"
+                />
+              )}
             </svg>
           </button>
         </div>
-        <div className="md:hidden overflow-hidden transition-all duration-300 max-h-0">
+        <div
+          className={`md:hidden overflow-hidden transition-all duration-300 ${
+            isOpen ? "max-h-96" : "max-h-0"
+          }`}
+        >
           <div className="bg-[#161616] backdrop-blur-xl rounded-2xl p-4 border border-[#262626]">
             <div className="flex flex-col space-y-1">
               <Link
-                className="px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 bg-orange-500/10 text-orange-500 border border-orange-500/30"
+                className={`px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
+                  location.pathname === "/"
+                    ? "bg-orange-500/10 text-orange-500 border border-orange-500/30"
+                    : "text-neutral-400 hover:bg-[#1a1a1a] hover:text-white"
+                }`}
                 to="/"
-                data-discover="true"
-                aria-current="page"
+                onClick={() => setIsOpen(false)}
               >
                 الرئيسية
               </Link>
               <Link
-                className="px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 text-neutral-400 hover:bg-[#1a1a1a] hover:text-white"
+                className={`px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
+                  location.pathname === "/blog"
+                    ? "bg-orange-500/10 text-orange-500 border border-orange-500/30"
+                    : "text-neutral-400 hover:bg-[#1a1a1a] hover:text-white"
+                }`}
                 to="/blog"
-                data-discover="true"
+                onClick={() => setIsOpen(false)}
               >
                 المدونة
               </Link>
               <Link
-                className="px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 text-neutral-400 hover:bg-[#1a1a1a] hover:text-white"
+                className={`px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 ${
+                  location.pathname === "/about"
+                    ? "bg-orange-500/10 text-orange-500 border border-orange-500/30"
+                    : "text-neutral-400 hover:bg-[#1a1a1a] hover:text-white"
+                }`}
                 to="/about"
-                data-discover="true"
+                onClick={() => setIsOpen(false)}
               >
                 من نحن
               </Link>
               <Link
                 className="btn-primary text-sm text-center mt-2"
                 to="/blog"
-                data-discover="true"
+                onClick={() => setIsOpen(false)}
               >
                 ابدأ القراءة
               </Link>
